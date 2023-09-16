@@ -1,4 +1,5 @@
 import { Elysia } from "elysia";
+import { MongoTaskRepository } from "./api/rest/task/infrastructure/task.repository.implement";
 
 interface Task{
   id:string
@@ -19,54 +20,14 @@ let tasks:Task[] = [
   }
 ] 
 
+const mongoTaskRepository = new MongoTaskRepository()
+
 const app = new Elysia()
-                  .get("/", () => new Response(
-                    JSON.stringify(tasks)
-                  ))
-                  .post("/", ({body}) => {
-                    const {title, completed} = body as {title:string, completed:boolean}
-                    const newTask:Task = {
-                      id:crypto.randomUUID(),
-                      title,
-                      completed
-                    }
-                    tasks.push(newTask)
-                    new Response(
-                    JSON.stringify(newTask)
-                  )
-                  })
-                  .delete("/:id", ({params,set}) => {
-                    const id = params.id
-                    const tempTask = tasks.filter(task=>task.id!==id)
-                    if(!tempTask){
-                      set.status=404
-                      new Response( JSON.stringify({
-                        message:'Something went wrong while deleting',
-                        error:true
-                      }))
-                    }
-                    tasks = [...tempTask]
-                    
-                    new Response(
-                    JSON.stringify({
-                      remove:'ok',
-                      error:false
-                    })
-                  )
-                  })
-                  .get("/:id", ({body,set, params}) => {
-                    const id = params.id
-                    const task = tasks.find(task => task.id === id)
-                    if(!task) {
-                      set.status = 404
-                      return new Response(JSON.stringify({
-                      message:'Not found task',
-                      error:true
-                    }))
-                    }
-                    return new Response(JSON.stringify(task))
-                  })
-                  .listen(3000);
+  .get("/", () => mongoTaskRepository.getAllTasks())
+  .post("/", (ctx) => mongoTaskRepository.createTask(ctx.body as TaskModel))
+  .delete("/:id", (ctx)=> mongoTaskRepository.removeTask(ctx.params.id as string))
+  .get("/:id", (ctx) =>mongoTaskRepository.getTaskById(ctx.params.id as string) )
+  .listen(3000);
 
 console.log(
   `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`

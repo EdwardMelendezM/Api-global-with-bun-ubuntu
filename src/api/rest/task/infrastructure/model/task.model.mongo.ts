@@ -1,5 +1,5 @@
-// infrastructure/task.model.mongo.ts
-import mongoose, { Schema, Document } from 'mongoose';
+import { Document, Schema } from "mongoose";
+import mongoose from "../database/connect";
 
 export interface TaskDocument extends Document {
   title: string;
@@ -11,4 +11,4 @@ const TaskSchema: Schema = new Schema({
   completed: { type: Boolean, default: false },
 });
 
-export const TaskModel = mongoose.model<TaskDocument>('Task', TaskSchema);
+export const TaskModelSchema = mongoose.model<TaskDocument>('task', TaskSchema);
