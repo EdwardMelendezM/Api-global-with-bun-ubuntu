@@ -1,8 +1,8 @@
 export abstract class TaskRepository{
-  abstract getAllTasks(): Array<TaskModel>
-  abstract getTaskById(taskId: string): TaskModel
-  abstract createTask(params:{title:string, completed:boolean}): TaskModel
-  abstract updateTask(task:TaskModel): TaskModel
+  abstract getAllTasks(): Promise<TaskModel[]>
+  abstract getTaskById(taskId: string): Promise<TaskModel | null>
+  abstract createTask(params:{title:string, completed:boolean}):Promise<TaskModel>
+  abstract updateTask(task:TaskModel): Promise<TaskModel>
   abstract removeTask(id: string): {ok:string, error:boolean}
 
 }
