@@ -1,24 +1,7 @@
 import { Elysia } from "elysia";
 import { MongoTaskRepository } from "./api/rest/task/infrastructure/task.repository.implement";
+import { TaskModel } from "./api/rest/task/domain/model/task.model";
 
-interface Task{
-  id:string
-  title:string
-  completed:boolean
-}
-
-let tasks:Task[] = [
-  {
-    id:'1',
-    title:'hacer la tarea',
-    completed:false
-  },
-  {
-    id:'2',
-    title:'ver television',
-    completed:false
-  }
-] 
 
 const mongoTaskRepository = new MongoTaskRepository()
 
