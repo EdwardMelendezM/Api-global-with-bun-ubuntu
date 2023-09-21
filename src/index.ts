@@ -3,15 +3,28 @@ import { MongoTaskRepository } from "./api/rest/task/infrastructure/task.reposit
 import { TaskModel } from "./api/rest/task/domain/model/task.model";
 
 import { swagger } from '@elysiajs/swagger'
+import { jwt } from '@elysiajs/jwt'
+import { MongoUserRepository } from "./api/rest/user/infrastructure/user.repository.implement";
+import { UserModel } from "./api/rest/user/domain/user.model";
 
 const mongoTaskRepository = new MongoTaskRepository()
+const mongoUserRepository = new MongoUserRepository()
+
+const tagsTask = { detail: { tags: ['Task'] } }
+const tagsUser= { detail: { tags: ['Auth'] } }
 
 const app = new Elysia()
+  .use(
+    jwt ({
+      name:'jwt',
+      secret:process.env.SECRET_JWT_SS!
+    })
+  )
   .use(swagger({
     documentation: {
       tags: [
-        { name: 'App', description: 'General endpoints' },
-        { name: 'Auth', description: 'Authentication endpoints' }
+        { name: 'Auth', description: 'Authentication endpoints' },
+        { name: 'Task', description: 'Tasks endpoints' }
       ],
       info:{
         title:'Elysia documentation',
@@ -21,16 +34,20 @@ const app = new Elysia()
   }))
   .group('task', (app) =>
     app
-    .get("/", () => mongoTaskRepository.getAllTasks(),
-          { detail: {tags:['Task']} })
-    .get("/:id", (ctx) => mongoTaskRepository.getTaskById(ctx.params.id as string),
-          { detail: { tags: ['Task'] } })
-    .post("/", (ctx) => mongoTaskRepository.createTask(ctx.body as TaskModel))
-    .patch("/", (ctx) => mongoTaskRepository.updateTask(ctx.body as TaskModel))
-    .delete("/:id", (ctx) => mongoTaskRepository.removeTask(ctx.params.id as string))
+      .get("/", () => mongoTaskRepository.getAllTasks(), tagsTask)
+      .get("/:id", (ctx) => mongoTaskRepository.getTaskById(ctx.params.id as string), tagsTask)
+      .post("/", (ctx) => mongoTaskRepository.createTask(ctx.body as TaskModel), tagsTask)
+      .patch("/", (ctx) => mongoTaskRepository.updateTask(ctx.body as TaskModel), tagsTask)
+      .delete("/:id", (ctx) => mongoTaskRepository.removeTask(ctx.params.id as string), tagsTask)
     ,
     
-  ).listen(3000);
+  )
+  .group('auth',(app)=>
+    app
+      .post("register", (ctx) => mongoUserRepository.register(ctx.body as UserModel), tagsUser)
+      .post("login", (ctx) => mongoUserRepository.login(ctx.body as UserModel), tagsUser)
+  )
+  .listen(3000);
   
 
 console.log(
