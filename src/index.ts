@@ -9,8 +9,9 @@ import { jwtAuth } from "./utils/jwt";
 const app = new Elysia()
   .use( jwtAuth )
   .use( swaggerDocumentation )
-  .use( routeTask )
   .use( routeAuth ) 
+  .use( routeTask )
+  
   .listen( 3000 );
   
 

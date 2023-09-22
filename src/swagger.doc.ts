@@ -7,7 +7,7 @@ export const swaggerDocumentation = swagger({
       { name: 'Task', description: 'Tasks endpoints' }
     ],
     info: {
-      title: 'Elysia documentation',
+      title: 'Tasks documentation',
       version: '1.0.0'
     }
   }
