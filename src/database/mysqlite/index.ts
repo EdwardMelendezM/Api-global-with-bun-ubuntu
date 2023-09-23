@@ -1,8 +1,8 @@
-import BunDatabase, {Bun} from "./bun.database";
-import BunService from "./connectSqLite";
+import TaskDatabase, {Task, TaskCreate} from "./task.database";
+import TaskService from "./connectSqLite";
 
-const db = new BunDatabase()
-const bunService = new  BunService(db)
+const db = new TaskDatabase()
+const bunService = new  TaskService(db)
 
 export default {
   port:5000,
@@ -17,22 +17,22 @@ export default {
     }
 
     if (method === 'POST' && pathname === "/buns") {
-      const data:Bun  = await request.json()
-      bunService.createByb(data.type)
+      const data: TaskCreate  = await request.json()
+      bunService.createByb(data)
       return new Response(JSON.stringify({
         success:'success'
       }))
     }
 
     if (method === 'PUT' && pathname === "/buns") {
-      const data: Bun = await request.json()
+      const data: Task = await request.json()
       bunService.updateBun(data)
       return new Response(JSON.stringify({
         success: 'updated succesfully'
       }))
     }
     if (method === 'DELETE' && pathname === "/buns") {
-      const data: Bun = await request.json()
+      const data: Task = await request.json()
       bunService.daleteBun(data.id)
       return new Response(JSON.stringify({
         success: 'delete succesfully'

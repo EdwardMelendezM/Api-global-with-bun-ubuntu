@@ -1,26 +1,25 @@
-import BunDatabase, {Bun,BunType} from "./bun.database";
+import TaskDatabase, {Task,TaskCreate} from "./task.database";
 
-export default class BunService{
-  db:BunDatabase
+export default class TaskService{
+  db: TaskDatabase
 
-  constructor(db:BunDatabase){
+  constructor(db: TaskDatabase){
     this.db=db
   }
 
-
   getBuns(){
-    return this.db.getBuns()
+    return this.db.getTasks()
   }
   getBun(id: string){
-    return this.db.getBun(id)
+    return this.db.getTask(id)
   }
-  createByb(type:BunType){
-    this.db.createBun(type)
+  createByb(type: TaskCreate){
+    this.db.createTask(type)
   }
-  updateBun(bun: Bun){
-    this.db.updateBun(bun)
+  updateBun(bun: Task){
+    this.db.updateTask(bun)
   }
   daleteBun(id: string){
-    this.db.deleteBUn(id)
+    this.db.deleteTask(id)
   }
 } 

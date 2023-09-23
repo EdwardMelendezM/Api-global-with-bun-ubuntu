@@ -17,7 +17,6 @@ export default class BunDatabase {
     this.db.run(
       "CREATE TABLE IF NOT EXISTS buns (id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT)"
     )
-
   }
 
   getBuns(): Bun[] {
