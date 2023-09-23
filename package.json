@@ -2,6 +2,7 @@
   "name": "hi-elysia",
   "version": "1.0.50",
   "scripts": {
+    "start":"bun install",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun run --watch src/index.ts"
   },
