@@ -6,7 +6,7 @@ import { UserModelSchema } from "./user.model.mongo";
 
 export class MongoUserRepository extends UserRepository {
 
-  async register(params:UserModel): Promise<{token:string}> {
+  async register(params:UserModel, jwt: any): Promise<{token:string, error:boolean}> {
     try {
       const {password,...data} = params
       const passwordHashed = await Bun.password.hash(password)
@@ -19,15 +19,23 @@ export class MongoUserRepository extends UserRepository {
       
       const createdOk = await newUser.save();
       if(!createdOk){
-        throw 'El usuario ya existe';
+        return {
+          token: 'El usuario ya existe!!',
+          error: true
+        }
       }
-      return { token: 'token' }
+
+      const token = await jwt.sign({ createdOk })
+      return {
+        token,
+        error: false,
+      }
     } catch (error) {
       throw error;
     }
   }
 
-  async login(params: UserModel): Promise<{ token: string }> {
+  async login(params: UserModel, jwt: any): Promise<{ token: string, error: boolean }> {
     try {
       const { username, password } = params
       const existUser = await UserModelSchema.findOne({
@@ -35,16 +43,25 @@ export class MongoUserRepository extends UserRepository {
       }).exec();
       
       if (!existUser){
-        return { token :"El usuario no fue encontrado" }
+        return {
+          token: "El usuario no fue encontrado" ,
+          error: true
+        }
       }
-
       const passwordHashed = existUser.password
-
       const isCorrectPassword = await Bun.password.verify(password, passwordHashed)
       if (!isCorrectPassword){
-        return { token: "Contrasenia incorrecta" }
+        return { 
+          token: "Contrasenia incorrecta",
+          error: true
+        }
       }
-      return { token: '' }
+      const token = await jwt.sign({ existUser })
+      
+      return { 
+        token: token,
+        error: false
+      }
     } catch (error) {
       throw error;
     }

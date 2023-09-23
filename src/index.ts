@@ -7,8 +7,8 @@ import { jwtAuth } from "./utils/jwt";
 
 
 const app = new Elysia()
+  .use(swaggerDocumentation)
   .use( jwtAuth )
-  .use( swaggerDocumentation )
   .use( routeAuth ) 
   .use( routeTask )
   
