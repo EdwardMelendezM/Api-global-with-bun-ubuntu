@@ -1,0 +1,10 @@
+CREATE TABLE tasks (
+    id TEXT PRIMARY KEY,
+    title TEXT,
+    completed INTEGER
+);
+
+INSERT INTO tasks (id, title, completed) VALUES
+    ('6505c64324567c4e92c0bfc1', 'comer todo lo que quiera', 0),
+    ('123456789', 'hacer ejercicio', 1),
+    ('abcdefg', 'aprender SQLite', 0);
