@@ -6,9 +6,9 @@ import { TaskModel } from "../domain/model/task.model";
 const mongoTaskRepository = new MongoTaskRepository()
 
 export const routeTask = new Elysia()
-  .group('tasks', endpoint =>
+  .group('task', endpoint =>
   endpoint
-    .get("/", () => mongoTaskRepository.getAllTasks(), tagsTask)
+    .get("/", (ctx) => mongoTaskRepository.getAllTasks(ctx.query), tagsTask)
     .get("/:id", (ctx) => mongoTaskRepository.getTaskById(ctx.params.id as string), tagsTask)
     .post("/", (ctx) => mongoTaskRepository.createTask(ctx.body as TaskModel), tagsTask)
     .patch("/", (ctx) => mongoTaskRepository.updateTask(ctx.body as TaskModel), tagsTask)

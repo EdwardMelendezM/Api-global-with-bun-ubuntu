@@ -12,9 +12,13 @@ export class MongoTaskRepository extends TaskRepository {
     };
   }
 
-  async getAllTasks(): Promise<TaskModel[]> {
+  async getAllTasks(query: any): Promise<TaskModel[]> {
     try {
-      const tasksData: TaskModel[] = await TaskModelSchema.find().exec();
+      const { limit = 5, offset = 0 } = query
+      const tasksData: TaskModel[] = await TaskModelSchema.find({})
+        .limit(limit)
+        .skip(offset)
+        .exec();
       return tasksData
     } catch (error) {
       throw error;
