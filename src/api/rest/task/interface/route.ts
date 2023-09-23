@@ -1,16 +1,18 @@
 import Elysia from "elysia";
 import { tagsTask } from "./swagger";
-import { MongoTaskRepository } from "../infrastructure/task.repository.implement";
-import { TaskModel } from "../domain/model/task.model";
+import { isAuthenticated } from "../../../../utils/isAuthenticated";
+import { taskUseCase } from "../usecase/task.usecase";
 
-const mongoTaskRepository = new MongoTaskRepository()
 
 export const routeTask = new Elysia()
-  .group('task', endpoint =>
-  endpoint
-    .get("/", (ctx) => mongoTaskRepository.getAllTasks(ctx.query), tagsTask)
-    .get("/:id", (ctx) => mongoTaskRepository.getTaskById(ctx.params.id as string), tagsTask)
-    .post("/", (ctx) => mongoTaskRepository.createTask(ctx.body as TaskModel), tagsTask)
-    .patch("/", (ctx) => mongoTaskRepository.updateTask(ctx.body as TaskModel), tagsTask)
-    .delete("/:id", (ctx) => mongoTaskRepository.removeTask(ctx.params.id as string), tagsTask)
+  
+  .group('task', route =>
+    route
+      .get("/", (ctx) => taskUseCase.getAllTasks(ctx), tagsTask)
+      .get("/:id", (ctx) => taskUseCase.getTaskById(ctx), tagsTask)
+      
+      .use(isAuthenticated)
+      .post("/", (ctx) => taskUseCase.createTask(ctx), tagsTask)
+      .patch("/", (ctx) => taskUseCase.updateTask(ctx), tagsTask)
+      .delete("/:id", (ctx) => taskUseCase.removeTask(ctx), tagsTask)
   )

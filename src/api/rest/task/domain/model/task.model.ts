@@ -1,5 +1,5 @@
 export interface TaskModel{
-  _id:string
+  id:string
   title:string
   completed:boolean
 }

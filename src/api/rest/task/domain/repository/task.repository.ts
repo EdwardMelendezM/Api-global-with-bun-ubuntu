@@ -1,9 +1,10 @@
+import { TaskTypeResponse } from "../../d.type";
 import { TaskModel } from "../model/task.model";
 
 export abstract class TaskRepository {
-  abstract getAllTasks(query: any): Promise<TaskModel[]>;
-  abstract getTaskById(taskId: string): Promise<TaskModel | null>;
-  abstract createTask(params: { title: string; completed: boolean }): Promise<TaskModel>;
-  abstract updateTask(task: TaskModel): Promise<TaskModel>;
-  abstract removeTask(id: string): Promise<{ ok: string; error: boolean }>;
+  abstract getAllTasks(query: any): Promise<TaskTypeResponse>;
+  abstract getTaskById(taskId: string): Promise<TaskTypeResponse>;
+  abstract createTask(params: { title: string; completed: boolean }): Promise<TaskTypeResponse>;
+  abstract updateTask(task: TaskModel): Promise<TaskTypeResponse>;
+  abstract removeTask(id: string): Promise<TaskTypeResponse>;
 }
