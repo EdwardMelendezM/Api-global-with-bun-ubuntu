@@ -8,11 +8,11 @@ export interface Task {
 
 export interface TaskCreate extends Omit<Task,'id'>{}
 
-export default class BunDatabase {
+export default class TaskDatabase {
   db: Database
 
   constructor() {
-    this.db = new Database("dbbuns.sqlite")
+    this.db = new Database("unsaac-db.sqlite")
     this.db.run(
       "CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, completed INTEGER NOT NULL)"
     )
@@ -30,11 +30,11 @@ export default class BunDatabase {
   }
 
   createTask(task: TaskCreate) {
-    this.db.run("INSERT INTO task (title, completed) VALUES (?,?) ", [task.title,task.completed])
+    this.db.run("INSERT INTO tasks (title, completed) VALUES (?,?) ", [task.title,task.completed ? 1 : 0])
   }
 
   updateTask(task: Task) {
-    this.db.run("UPDATE buns SET title=?, completed=? WHERE id=?", [task.title, task.completed ? 1 : 0, task.id]);
+    this.db.run("UPDATE tasks SET title=?, completed=? WHERE id=?", [task.title, task.completed ? 1 : 0, task.id]);
   }
 
   deleteTask(id: string) {

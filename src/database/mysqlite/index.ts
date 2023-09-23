@@ -1,8 +1,8 @@
 import TaskDatabase, {Task, TaskCreate} from "./task.database";
-import TaskService from "./connectSqLite";
+import TaskService from "./task.service";
 
 const db = new TaskDatabase()
-const bunService = new  TaskService(db)
+const taskService = new  TaskService(db)
 
 export default {
   port:5000,
@@ -11,29 +11,29 @@ export default {
     const { pathname, searchParams } = new URL(url)
     console.log(`${method} ${pathname}`);
 
-    if(method === 'GET' && pathname === "/buns"){
-      const buns = bunService.getBuns()
+    if(method === 'GET' && pathname === "/task"){
+      const buns = taskService.getBuns()
       return new Response(JSON.stringify(buns))
     }
 
-    if (method === 'POST' && pathname === "/buns") {
+    if (method === 'POST' && pathname === "/task") {
       const data: TaskCreate  = await request.json()
-      bunService.createByb(data)
+      taskService.createByb(data)
       return new Response(JSON.stringify({
         success:'success'
       }))
     }
 
-    if (method === 'PUT' && pathname === "/buns") {
+    if (method === 'PUT' && pathname === "/task") {
       const data: Task = await request.json()
-      bunService.updateBun(data)
+      taskService.updateBun(data)
       return new Response(JSON.stringify({
         success: 'updated succesfully'
       }))
     }
-    if (method === 'DELETE' && pathname === "/buns") {
+    if (method === 'DELETE' && pathname === "/task") {
       const data: Task = await request.json()
-      bunService.daleteBun(data.id)
+      taskService.daleteBun(data.id)
       return new Response(JSON.stringify({
         success: 'delete succesfully'
       }))
