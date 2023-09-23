@@ -1,4 +1,29 @@
-export const tagsAuth = {
+import { t } from "elysia";
+
+export const registerDto = t.Object({
+  username: t.String({default:'user1'}),
+  password: t.String({ default: '123ASD' }),
+  name: t.String({ default: 'Juan' })
+})
+
+export const loginDto = t.Object({
+  username: t.String({ default: 'user1' }),
+  password: t.String({ default: '123ASD' })
+})
+export const optionsRegister = {
+  body: registerDto,
+  detail: {
+    tags: ["Auth"],
+  }
+};
+export const optionsLogin = {
+  body: loginDto,
+  detail: {
+    tags: ["Auth"],
+  }
+};
+
+export const tagsDetails= {
   detail: {
     tags: ["Auth"],
     summary: "Login app",

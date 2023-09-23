@@ -1,4 +1,3 @@
-import { password } from "bun";
 import { UserModel } from "../domain/user.model";
 import { UserRepository } from "../domain/user.repository";
 import { UserModelSchema } from "./user.model.mongo";
@@ -31,7 +30,10 @@ export class MongoUserRepository extends UserRepository {
         error: false,
       }
     } catch (error) {
-      throw error;
+      return {
+        token: `${error}`,
+        error: true,
+      }
     }
   }
 
@@ -63,7 +65,10 @@ export class MongoUserRepository extends UserRepository {
         error: false
       }
     } catch (error) {
-      throw error;
+      return {
+        token: `${error}`,
+        error: true,
+      }
     }
   }
   

@@ -1,17 +1,13 @@
-import Elysia from "elysia";
-import { tagsAuth } from "./swagger";
-import { MongoUserRepository } from "../infrastructure/user.repository.implement";
+import Elysia, { t } from "elysia";
+import { optionsLogin, optionsRegister } from "./swagger";
 import { UserModel } from "../domain/user.model";
+import { MongoUserRepository } from "../infrastructure/user.repository.implement";
 
 const mongoUserRepository = new MongoUserRepository()
 
 export const routeAuth = new Elysia()
   .group('auth', (app) =>
     app
-      // .post("register", (ctx) => mongoUserRepository.register(ctx.body as UserModel,), tagsAuth)
-      .post("register", (ctx) => mongoUserRepository.register(ctx.body as UserModel, ctx.jwt as any))
-      .post("login", (ctx) => {
-        console.log(ctx.params)
-        return mongoUserRepository.login(ctx.body as UserModel, ctx.jwt as any)
-      }, tagsAuth)
+      .post("register", (ctx) => mongoUserRepository.register(ctx.body as UserModel, ctx.jwt as any), optionsRegister)
+      .post("login", (ctx) => mongoUserRepository.login(ctx.body as UserModel, ctx.jwt as any), optionsLogin)
   )
