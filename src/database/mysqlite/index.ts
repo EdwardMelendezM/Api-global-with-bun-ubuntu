@@ -24,6 +24,21 @@ export default {
       }))
     }
 
+    if (method === 'PUT' && pathname === "/buns") {
+      const data: Bun = await request.json()
+      bunService.updateBun(data)
+      return new Response(JSON.stringify({
+        success: 'updated succesfully'
+      }))
+    }
+    if (method === 'DELETE' && pathname === "/buns") {
+      const data: Bun = await request.json()
+      bunService.daleteBun(data.id)
+      return new Response(JSON.stringify({
+        success: 'delete succesfully'
+      }))
+    }
+
     return new Response("Not found", { status:400})
   }
 }
