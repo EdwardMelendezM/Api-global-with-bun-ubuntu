@@ -1,5 +1,4 @@
 import { TaskRepository } from '../domain/repository/task.repository';
-import { MongoTaskRepository } from '../infrastructure/task.repository.implement';
 import { TaskTypeResponse } from '../d.type';
 
 
@@ -30,16 +29,14 @@ export class TaskUseCaseImplementado {
   }
 
   async updateTask(ctx: any): Promise<TaskTypeResponse> {
-    // if (!ctx.user) {
-    //   ctx.set.status = 401;
-    //   return {
-    //     data: null,
-    //     error: true,
-    //     res: "Don't has token authorization"
-    //   };
-    // }
-    console.log(ctx.body);
-    
+    if (!ctx.user) {
+      ctx.set.status = 401;
+      return {
+        data: null,
+        error: true,
+        res: "Don't has token authorization"
+      };
+    }
     return this.taskRepository.updateTask(ctx.body);
   }
 
@@ -56,4 +53,4 @@ export class TaskUseCaseImplementado {
   }
 }
 
-export const taskUseCase = new TaskUseCaseImplementado(new MongoTaskRepository())
+

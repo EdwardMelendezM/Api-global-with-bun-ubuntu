@@ -19,6 +19,7 @@ export class MongoTaskRepository extends TaskRepository {
         res: null
       }
     } catch (error) {
+      
       return {
         data: null,
         error: false,
@@ -30,6 +31,11 @@ export class MongoTaskRepository extends TaskRepository {
   async getTaskById(taskId: string): Promise<TaskTypeResponse> {
     try {
       const taskData: TaskEntity | null = await TaskModelSchema.findById(taskId).exec();
+
+      if(!taskData){
+        throw 'Not found taks id'
+      }
+
       return {
         data: taskData,
         error: false,
@@ -67,26 +73,34 @@ export class MongoTaskRepository extends TaskRepository {
 
   async updateTask(task: TaskModel): Promise<TaskTypeResponse> {
     try {
-      console.log(task);
-      
       const updatedTask = await TaskModelSchema.findByIdAndUpdate(task.id, task, { new: true }).exec();
+      if(!updatedTask){
+        throw "task id not found"
+      }
       return {
         data: updatedTask,
         error: false,
         res: null
       } 
     } catch (error) {
+      
       return {
         data: null,
         error: true,
         res: `${error}`
       }
+      
     }
   }
 
   async removeTask(id: string): Promise<TaskTypeResponse> {
     try {
       const isOk = await TaskModelSchema.findByIdAndDelete(id).exec();
+
+      if (!isOk) {
+        throw 'Not found taks id'
+      }
+
       return {
         data: isOk,
         error: false,
