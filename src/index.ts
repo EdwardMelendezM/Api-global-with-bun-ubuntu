@@ -5,9 +5,7 @@ import { routeAuth } from "./api/rest/user/interface/route";
 import cors from "@elysiajs/cors";
 
 const app = new Elysia()
-  // .use(cors({
-  //   origin: /\*.saltyaom.com$/
-  // }))
+  .use(cors())
   .use(swaggerDocumentation)
   
   .use( routeAuth )
