@@ -11,7 +11,25 @@ export const routeAuth = new Elysia()
   .group('auth', (app) =>
     app
       // @ts-ignore
-      .post("register", (ctx) => mongoUserRepository.register(ctx.body as UserModel, ctx.jwt as any), optionsRegister)
+      .post("register", async (ctx) => {
+        const { error, token } = await mongoUserRepository.register(ctx.body as UserModel, ctx.jwt as any)
+        if( error === true ){
+          ctx.set.status = 404
+        }
+        return {
+          error,
+          token
+        }
+      }, optionsRegister)
       // @ts-ignore
-      .post("login", (ctx) => mongoUserRepository.login(ctx.body as UserModel, ctx.jwt as any), optionsLogin)
+      .post("login", async (ctx) => {
+        const { error, token } = await mongoUserRepository.login(ctx.body as UserModel, ctx.jwt as any)
+        if (error === true) {
+          ctx.set.status = 404
+        }
+        return {
+          error,
+          token
+        }
+      }, optionsLogin)
   )
