@@ -17,38 +17,38 @@ export class TaskUseCaseImplementado {
   }
 
   async createTask(ctx: any): Promise<TaskTypeResponse> {
-    if (!ctx.user) {
-      ctx.set.status = 401;
-      return {
-        data: null,
-        error: true,
-        res: "Don't has token authorization"
-      };
-    }
+    // if (!ctx.user) {
+    //   ctx.set.status = 401;
+    //   return {
+    //     data: null,
+    //     error: true,
+    //     res: "Don't has token authorization"
+    //   };
+    // }
     return this.taskRepository.createTask(ctx.body);
   }
 
   async updateTask(ctx: any): Promise<TaskTypeResponse> {
-    if (!ctx.user) {
-      ctx.set.status = 401;
-      return {
-        data: null,
-        error: true,
-        res: "Don't has token authorization"
-      };
-    }
+    // if (!ctx.user) {
+    //   ctx.set.status = 401;
+    //   return {
+    //     data: null,
+    //     error: true,
+    //     res: "Don't has token authorization"
+    //   };
+    // }
     return this.taskRepository.updateTask(ctx.body);
   }
 
   async removeTask(ctx: any): Promise<TaskTypeResponse> {
-    if (!ctx.user) {
-      ctx.set.status = 401;
-      return {
-        data: null,
-        error: true,
-        res: "Don't has token authorization"
-      };
-    }
+    // if (!ctx.user) {
+    //   ctx.set.status = 401;
+    //   return {
+    //     data: null,
+    //     error: true,
+    //     res: "Don't has token authorization"
+    //   };
+    // }
     return this.taskRepository.removeTask(ctx.params.id);
   }
 }

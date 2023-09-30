@@ -10,7 +10,7 @@ const taskUseCase = new TaskUseCaseImplementado(mongoTaskRepository)
 export const routeTask = new Elysia()
   .group('task', route =>
     route
-      .use(isAuthenticated)
+      // .use(isAuthenticated)
       .get("/", (ctx) => taskUseCase.getAllTasks(ctx), tagsTask)
       .get("/:id", (ctx) => taskUseCase.getTaskById(ctx), tagsTask)
       .post("/", (ctx) => {
